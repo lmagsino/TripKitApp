@@ -1,97 +1,163 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# TripKit Mobile App
 
-# Getting Started
+> React Native mobile application for TripKit - Your complete travel companion
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+[![React Native](https://img.shields.io/badge/React%20Native-0.82-blue.svg)](https://reactnative.dev/)
+[![iOS](https://img.shields.io/badge/iOS-13+-black.svg)](https://www.apple.com/ios/)
+[![Android](https://img.shields.io/badge/Android-6.0+-green.svg)](https://www.android.com/)
 
-## Step 1: Start Metro
+🚧 **Status:** In Development
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+---
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## About
 
-```sh
-# Using npm
+TripKit mobile app is the frontend for the TripKit travel companion platform. It helps groups manage expenses, itineraries, and documents for their trips.
+
+**Core Features:**
+
+- 💰 **Expense Tracking** - Quick expense logging with auto-split
+- 📅 **Itinerary Management** - Daily schedules and activities
+- 📎 **Document Storage** - Keep travel docs accessible
+- 🌍 **Multi-Currency** - Switch currencies on the go
+- 👥 **Real-time Collaboration** - Everyone stays in sync
+
+---
+
+## Screenshots
+
+*Coming soon - Screenshots will be added as features are developed*
+
+---
+
+## Tech Stack
+
+- React Native 0.82
+- React Navigation (for routing)
+- Axios (API calls)
+- AsyncStorage (local data)
+- JWT Authentication
+
+---
+
+## Backend API
+
+This app connects to the TripKit Rails API backend.
+
+**Repository:** [github.com/lmagsino/tripkit-api](https://github.com/lmagsino/tripkit-api)
+
+**Local Development:** `http://localhost:3000/api/v1`
+
+---
+
+## Prerequisites
+
+- Node.js 20+
+- npm or yarn
+- Xcode 16+ (for iOS)
+- Android Studio (for Android)
+- CocoaPods (for iOS dependencies)
+- Watchman
+
+---
+
+## Setup
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Install iOS pods
+
+```bash
+cd ios
+pod install
+cd ..
+```
+
+### 3. Configure API endpoint
+
+Create a `.env` file in the root directory:
+
+```
+API_URL=http://localhost:3000/api/v1
+```
+
+### 4. Start Metro bundler
+
+```bash
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Build and run your app
+### 5. Run on iOS
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+In a new terminal:
+```bash
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### 6. Run on Android
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```bash
+npm run android
+```
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
+## Project Structure
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+```
+TripKitApp/
+├── src/
+│   ├── screens/         # Screen components
+│   ├── components/      # Reusable components
+│   ├── navigation/      # Navigation configuration
+│   ├── services/        # API services
+│   ├── utils/           # Helper functions
+│   └── constants/       # Constants and config
+├── ios/                 # iOS native code
+├── android/             # Android native code
+└── App.tsx              # Root component
+```
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+---
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## Development Status
 
-## Congratulations! :tada:
+**Completed:**
+- ✅ Project setup
+- ✅ iOS simulator running
 
-You've successfully run and modified your React Native App. :partying_face:
+**In Progress:**
+- 🔄 Authentication screens
+- 📋 Navigation setup
+- 📋 API integration
 
-### Now what?
+**Planned:**
+- 📋 Trip management
+- 📋 Expense tracking UI
+- 📋 Itinerary screens
+- 📋 Document management
+- 📋 Settlement views
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+**Target completion:** December 2025
 
-# Troubleshooting
+---
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## Testing
 
-# Learn More
+Make sure the backend API is running before testing the mobile app:
 
-To learn more about React Native, take a look at the following resources:
+```bash
+# In the backend repository
+cd ../tripkit-api
+rails server
+```
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Then run the mobile app and it will connect to `http://localhost:3000`
+
+---
+
+**Backend API:** [github.com/lmagsino/tripkit-api](https://github.com/lmagsino/tripkit-api)
