@@ -30,12 +30,13 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const renderTrip = ({ item }) => (
-    <TouchableOpacity 
-        style={styles.fab}
-        onPress={() => navigation.navigate('CreateTrip')}
-      >
-        <Text style={styles.fabText}>+</Text>
-      </TouchableOpacity>
+    <TouchableOpacity style={styles.tripCard}>
+      <Text style={styles.tripName}>{item.name}</Text>
+      <Text style={styles.tripDates}>
+        {item.start_date} - {item.end_date}
+      </Text>
+      <Text style={styles.tripCurrency}>{item.active_currency}</Text>
+    </TouchableOpacity>
   );
 
   if (loading) {
@@ -62,7 +63,17 @@ const HomeScreen = ({ navigation }) => {
         />
       )}
 
-      <TouchableOpacity style={styles.fab}>
+      <TouchableOpacity 
+        style={styles.joinButton}
+        onPress={() => navigation.navigate('JoinTrip')}
+      >
+        <Text style={styles.joinButtonText}>Join Trip with Code</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity 
+        style={styles.fab}
+        onPress={() => navigation.navigate('CreateTrip')}
+      >
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
     </View>
@@ -125,6 +136,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     textAlign: 'center',
+  },
+  joinButton: {
+    position: 'absolute',
+    left: 20,
+    bottom: 20,
+    backgroundColor: '#fff',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: '#007AFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 8,
+  },
+  joinButtonText: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
   fab: {
     position: 'absolute',

@@ -5,6 +5,7 @@ import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import HomeScreen from './src/screens/HomeScreen';
 import CreateTripScreen from './src/screens/CreateTripScreen';
+import JoinTripScreen from './src/screens/JoinTripScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +46,11 @@ function App() {
           name="CreateTrip" 
           component={CreateTripScreen}
           options={{ title: 'Create Trip' }}
+        />
+        <Stack.Screen 
+          name="JoinTrip" 
+          component={JoinTripScreen}
+          options={{ title: 'Join Trip' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
