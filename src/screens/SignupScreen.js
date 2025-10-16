@@ -35,7 +35,7 @@ const SignupScreen = ({ navigation }) => {
 
     if (result.success) {
       Alert.alert('Success', 'Account created successfully!');
-      // navigation.navigate('Home');
+      navigation.navigate('Home');
     } else {
       Alert.alert('Error', result.error.join('\n'));
     }

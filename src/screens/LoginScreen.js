@@ -28,7 +28,7 @@ const LoginScreen = ({ navigation }) => {
     if (result.success) {
       // Navigate to Home (we'll create this later)
       Alert.alert('Success', 'Logged in successfully!');
-      // navigation.navigate('Home');
+      navigation.navigate('Home');
     } else {
       Alert.alert('Error', result.error.join('\n'));
     }
