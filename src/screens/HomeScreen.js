@@ -30,13 +30,12 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const renderTrip = ({ item }) => (
-    <TouchableOpacity style={styles.tripCard}>
-      <Text style={styles.tripName}>{item.name}</Text>
-      <Text style={styles.tripDates}>
-        {item.start_date} - {item.end_date}
-      </Text>
-      <Text style={styles.tripCurrency}>{item.active_currency}</Text>
-    </TouchableOpacity>
+    <TouchableOpacity 
+        style={styles.fab}
+        onPress={() => navigation.navigate('CreateTrip')}
+      >
+        <Text style={styles.fabText}>+</Text>
+      </TouchableOpacity>
   );
 
   if (loading) {
