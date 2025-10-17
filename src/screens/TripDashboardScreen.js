@@ -61,7 +61,10 @@ const TripDashboardScreen = ({ route, navigation }) => {
       </View>
 
       <View style={styles.section}>
-        <TouchableOpacity style={styles.menuButton}>
+        <TouchableOpacity 
+          style={styles.menuButton}
+          onPress={() => navigation.navigate('ExpenseList', { tripId: trip.id })}
+        >
           <Text style={styles.menuIcon}>💰</Text>
           <Text style={styles.menuText}>Expenses</Text>
           <Text style={styles.menuArrow}>›</Text>
