@@ -30,7 +30,10 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const renderTrip = ({ item }) => (
-    <TouchableOpacity style={styles.tripCard}>
+    <TouchableOpacity 
+      style={styles.tripCard}
+      onPress={() => navigation.navigate('TripDashboard', { tripId: item.id })}
+    >
       <Text style={styles.tripName}>{item.name}</Text>
       <Text style={styles.tripDates}>
         {item.start_date} - {item.end_date}
