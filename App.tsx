@@ -8,6 +8,7 @@ import CreateTripScreen from './src/screens/CreateTripScreen';
 import JoinTripScreen from './src/screens/JoinTripScreen';
 import TripDashboardScreen from './src/screens/TripDashboardScreen';
 import ExpenseListScreen from './src/screens/ExpenseListScreen';
+import SettlementScreen from './src/screens/SettlementScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -63,6 +64,11 @@ function App() {
           name="ExpenseList" 
           component={ExpenseListScreen}
           options={{ title: 'Expenses' }}
+        />
+        <Stack.Screen 
+          name="Settlement" 
+          component={SettlementScreen}
+          options={{ title: 'Settlement' }}
         />
       </Stack.Navigator>
     </NavigationContainer>

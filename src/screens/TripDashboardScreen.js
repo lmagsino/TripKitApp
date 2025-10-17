@@ -82,7 +82,10 @@ const TripDashboardScreen = ({ route, navigation }) => {
           <Text style={styles.menuArrow}>›</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.menuButton}>
+        <TouchableOpacity 
+          style={styles.menuButton}
+          onPress={() => navigation.navigate('Settlement', { tripId: trip.id })}
+        >
           <Text style={styles.menuIcon}>💸</Text>
           <Text style={styles.menuText}>Settlement</Text>
           <Text style={styles.menuArrow}>›</Text>
