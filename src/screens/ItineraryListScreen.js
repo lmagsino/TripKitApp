@@ -9,6 +9,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import api from '../services/api';
+import { formatDate } from '../utils/dateFormatter';
 
 const ItineraryListScreen = ({ route, navigation }) => {
   const { tripId } = route.params;
@@ -34,7 +35,7 @@ const ItineraryListScreen = ({ route, navigation }) => {
   const renderItem = ({ item }) => (
     <View style={styles.itemCard}>
       <View style={styles.itemHeader}>
-        <Text style={styles.date}>{item.date}</Text>
+        <Text style={styles.date}>{formatDate(item.date)}</Text>
         {item.time && <Text style={styles.time}>{item.time}</Text>}
       </View>
       <Text style={styles.title}>{item.title}</Text>

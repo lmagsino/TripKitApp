@@ -9,6 +9,7 @@ import {
   RefreshControl,
 } from 'react-native';
 import api from '../services/api';
+import { formatDate } from '../utils/dateFormatter';
 
 const ExpenseListScreen = ({ route, navigation }) => {
   const { tripId } = route.params;
@@ -51,7 +52,7 @@ const ExpenseListScreen = ({ route, navigation }) => {
       <Text style={styles.paidBy}>
         Paid by {item.paid_by_user?.name || 'Unknown'}
       </Text>
-      <Text style={styles.date}>{item.expense_date}</Text>
+      <Text style={styles.date}>{formatDate(item.expense_date)}</Text>
     </View>
   );
 

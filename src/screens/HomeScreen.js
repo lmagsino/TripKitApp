@@ -12,6 +12,7 @@ import {
 import api from '../services/api';
 import { ENDPOINTS } from '../constants/config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { formatDate } from '../utils/dateFormatter';
 
 const HomeScreen = ({ navigation }) => {
   const [trips, setTrips] = useState([]);
@@ -48,9 +49,14 @@ const HomeScreen = ({ navigation }) => {
     >
       <Text style={styles.tripName}>{item.name}</Text>
       <Text style={styles.tripDates}>
-        {item.start_date} - {item.end_date}
+        {formatDate(item.start_date)} - {formatDate(item.end_date)}
       </Text>
-      <Text style={styles.tripCurrency}>{item.active_currency}</Text>
+      <View style={styles.tripFooter}>
+        <Text style={styles.tripCurrency}>{item.active_currency}</Text>
+        {item.users && item.users.length > 0 && (
+          <Text style={styles.memberCount}>👥 {item.users.length} members</Text>
+        )}
+      </View>
     </TouchableOpacity>
   );
 
@@ -240,6 +246,17 @@ const styles = StyleSheet.create({
   emptyIcon: {
     fontSize: 64,
     marginBottom: 20,
+  },
+  tripFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  memberCount: {
+    fontSize: 12,
+    color: '#666',
+    fontWeight: '500',
   },
 });
 

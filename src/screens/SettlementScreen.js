@@ -47,9 +47,10 @@ const SettlementScreen = ({ route }) => {
 
       {!hasSettlements ? (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>✓</Text>
+          <Text style={styles.celebrationIcon}>🎉</Text>
           <Text style={styles.emptyText}>All Settled Up!</Text>
           <Text style={styles.emptySubtext}>No outstanding debts</Text>
+          <Text style={styles.celebrationText}>Everyone's even! 🤝</Text>
         </View>
       ) : (
         <View style={styles.settlementsContainer}>
@@ -185,6 +186,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: '#28a745',
+  },
+  celebrationIcon: {
+    fontSize: 80,
+    marginBottom: 20,
+  },
+  celebrationText: {
+    fontSize: 18,
+    color: '#28a745',
+    fontWeight: '600',
+    marginTop: 10,
   },
 });
 
