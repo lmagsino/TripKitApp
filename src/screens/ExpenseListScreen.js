@@ -15,6 +15,7 @@ const ExpenseListScreen = ({ route, navigation }) => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     fetchExpenses();
@@ -24,6 +25,10 @@ const ExpenseListScreen = ({ route, navigation }) => {
     try {
       const response = await api.get(`/trips/${tripId}/expenses`);
       setExpenses(response.data);
+      
+      // Calculate total
+      const sum = response.data.reduce((acc, exp) => acc + parseFloat(exp.amount), 0);
+      setTotal(sum);
     } catch (error) {
       console.error('Error fetching expenses:', error);
     } finally {
@@ -34,7 +39,10 @@ const ExpenseListScreen = ({ route, navigation }) => {
   const renderExpense = ({ item }) => (
     <View style={styles.expenseCard}>
       <View style={styles.expenseHeader}>
-        <Text style={styles.category}>{item.category}</Text>
+        <View style={styles.categoryContainer}>
+          <Text style={styles.categoryIcon}>{getCategoryIcon(item.category)}</Text>
+          <Text style={styles.category}>{item.category}</Text>
+        </View>
         <Text style={styles.amount}>
           {item.currency} {item.amount}
         </Text>
@@ -53,6 +61,18 @@ const ExpenseListScreen = ({ route, navigation }) => {
     setRefreshing(false);
   };
 
+  const getCategoryIcon = (category) => {
+    const icons = {
+      taxi: '🚕',
+      food: '🍽️',
+      hotel: '🏨',
+      activities: '🎫',
+      shopping: '🛒',
+      other: '📦',
+    };
+    return icons[category] || '💰';
+  };
+
   if (loading) {
     return (
       <View style={styles.centered}>
@@ -63,6 +83,14 @@ const ExpenseListScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      {!loading && expenses.length > 0 && (
+        <View style={styles.totalCard}>
+          <Text style={styles.totalLabel}>Total Spent</Text>
+          <Text style={styles.totalAmount}>
+            {expenses[0]?.currency} {total.toFixed(2)}
+          </Text>
+        </View>
+      )}
       {expenses.length === 0 ? (
         <View style={styles.emptyState}>
           <Text style={styles.emptyText}>No expenses yet</Text>
@@ -180,6 +208,33 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: '#fff',
     fontWeight: '300',
+  },
+  totalCard: {
+    backgroundColor: '#007AFF',
+    margin: 15,
+    marginBottom: 0,
+    padding: 20,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  totalLabel: {
+    fontSize: 14,
+    color: '#fff',
+    opacity: 0.9,
+    marginBottom: 4,
+  },
+  totalAmount: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  categoryIcon: {
+    fontSize: 20,
+    marginRight: 6,
   },
 });
 
