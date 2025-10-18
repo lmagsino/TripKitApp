@@ -10,6 +10,8 @@ import TripDashboardScreen from './src/screens/TripDashboardScreen';
 import ExpenseListScreen from './src/screens/ExpenseListScreen';
 import SettlementScreen from './src/screens/SettlementScreen';
 import AddExpenseScreen from './src/screens/AddExpenseScreen';
+import ItineraryListScreen from './src/screens/ItineraryListScreen';
+import AddItineraryScreen from './src/screens/AddItineraryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +77,16 @@ function App() {
           name="AddExpense" 
           component={AddExpenseScreen}
           options={{ title: 'Add Expense' }}
+        />
+        <Stack.Screen 
+          name="ItineraryList" 
+          component={ItineraryListScreen}
+          options={{ title: 'Itinerary' }}
+        />
+        <Stack.Screen 
+          name="AddItinerary" 
+          component={AddItineraryScreen}
+          options={{ title: 'Add Activity' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
