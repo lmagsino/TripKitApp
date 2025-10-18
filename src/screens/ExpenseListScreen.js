@@ -69,7 +69,10 @@ const ExpenseListScreen = ({ route, navigation }) => {
         />
       )}
 
-      <TouchableOpacity style={styles.fab}>
+      <TouchableOpacity 
+        style={styles.fab}
+        onPress={() => navigation.navigate('AddExpense', { tripId })}
+      >
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
     </View>
