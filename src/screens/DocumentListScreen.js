@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   Alert,
+  RefreshControl,
 } from 'react-native';
 import api from '../services/api';
 
@@ -14,6 +15,7 @@ const DocumentListScreen = ({ route, navigation }) => {
   const { tripId } = route.params;
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchDocuments();
@@ -56,6 +58,12 @@ const DocumentListScreen = ({ route, navigation }) => {
     </View>
   );
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchDocuments();
+    setRefreshing(false);
+  };
+
   if (loading) {
     return (
       <View style={styles.centered}>
@@ -77,6 +85,9 @@ const DocumentListScreen = ({ route, navigation }) => {
           renderItem={renderDocument}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.list}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       )}
 

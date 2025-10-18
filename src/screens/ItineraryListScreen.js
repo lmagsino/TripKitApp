@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import api from '../services/api';
 
@@ -13,6 +14,7 @@ const ItineraryListScreen = ({ route, navigation }) => {
   const { tripId } = route.params;
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchItems();
@@ -42,6 +44,12 @@ const ItineraryListScreen = ({ route, navigation }) => {
     </View>
   );
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchItems();
+    setRefreshing(false);
+  };
+
   if (loading) {
     return (
       <View style={styles.centered}>
@@ -63,6 +71,9 @@ const ItineraryListScreen = ({ route, navigation }) => {
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.list}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       )}
 

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import api from '../services/api';
 
@@ -13,6 +14,7 @@ const ExpenseListScreen = ({ route, navigation }) => {
   const { tripId } = route.params;
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchExpenses();
@@ -45,6 +47,12 @@ const ExpenseListScreen = ({ route, navigation }) => {
     </View>
   );
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchExpenses();
+    setRefreshing(false);
+  };
+
   if (loading) {
     return (
       <View style={styles.centered}>
@@ -66,6 +74,9 @@ const ExpenseListScreen = ({ route, navigation }) => {
           renderItem={renderExpense}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.list}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       )}
 
