@@ -12,6 +12,8 @@ import SettlementScreen from './src/screens/SettlementScreen';
 import AddExpenseScreen from './src/screens/AddExpenseScreen';
 import ItineraryListScreen from './src/screens/ItineraryListScreen';
 import AddItineraryScreen from './src/screens/AddItineraryScreen';
+import DocumentListScreen from './src/screens/DocumentListScreen';
+import AddDocumentScreen from './src/screens/AddDocumentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -87,6 +89,16 @@ function App() {
           name="AddItinerary" 
           component={AddItineraryScreen}
           options={{ title: 'Add Activity' }}
+        />
+        <Stack.Screen 
+          name="DocumentList" 
+          component={DocumentListScreen}
+          options={{ title: 'Documents' }}
+        />
+        <Stack.Screen 
+          name="AddDocument" 
+          component={AddDocumentScreen}
+          options={{ title: 'Add Document' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
