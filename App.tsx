@@ -100,6 +100,13 @@ function App() {
           component={AddDocumentScreen}
           options={{ title: 'Add Document' }}
         />
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen}
+          options={{ 
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

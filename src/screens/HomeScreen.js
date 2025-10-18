@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   Text,
@@ -9,15 +10,24 @@ import {
 } from 'react-native';
 import api from '../services/api';
 import { ENDPOINTS } from '../constants/config';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const HomeScreen = ({ navigation }) => {
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchTrips();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTrips();
+    }, [])
+  );
 
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem('authToken');
+    await AsyncStorage.removeItem('user');
+    navigation.replace('Login');
+  };
+  
   const fetchTrips = async () => {
     try {
       const response = await api.get(ENDPOINTS.TRIPS);
@@ -52,10 +62,18 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>My Trips</Text>
+        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
+      </View>
+
       {trips.length === 0 ? (
         <View style={styles.emptyState}>
+          <Text style={styles.emptyIcon}>🧳</Text>
           <Text style={styles.emptyText}>No trips yet</Text>
-          <Text style={styles.emptySubtext}>Create your first trip to get started</Text>
+          <Text style={styles.emptySubtext}>Create your first trip or join with a code</Text>
         </View>
       ) : (
         <FlatList
@@ -181,6 +199,36 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: '#fff',
     fontWeight: '300',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  logoutButton: {
+    paddingVertical: 8,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ff3b30',
+  },
+  logoutText: {
+    color: '#ff3b30',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  emptyIcon: {
+    fontSize: 64,
+    marginBottom: 20,
   },
 });
 
