@@ -10,10 +10,13 @@ import {
   ScrollView,
 } from 'react-native';
 import api from '../services/api';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Platform } from 'react-native';
 
 const AddItineraryScreen = ({ route, navigation }) => {
   const { tripId } = route.params;
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [time, setTime] = useState('');
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
@@ -33,7 +36,7 @@ const AddItineraryScreen = ({ route, navigation }) => {
     try {
       await api.post(`/trips/${tripId}/itinerary_items`, {
         itinerary_item: {
-          date,
+          date: formatDate(date),
           time: time || null,
           title,
           location: location || null,
@@ -55,15 +58,34 @@ const AddItineraryScreen = ({ route, navigation }) => {
     }
   };
 
+  const handleDateChange = (event, selectedDate) => {
+    setShowDatePicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      setDate(selectedDate);
+    }
+  };
+
+  const formatDate = (date) => {
+    return date.toISOString().split('T')[0];
+  };
+
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.label}>Date * (YYYY-MM-DD)</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="2024-12-29"
-        value={date}
-        onChangeText={setDate}
-      />
+      <Text style={styles.label}>Date *</Text>
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowDatePicker(true)}
+      >
+        <Text style={styles.dateText}>{formatDate(date)}</Text>
+      </TouchableOpacity>
+      {showDatePicker && (
+        <DateTimePicker
+          value={date}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
 
       <Text style={styles.label}>Time (Optional, HH:MM)</Text>
       <TextInput
@@ -201,6 +223,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  dateButton: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    backgroundColor: '#f9f9f9',
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#333',
   },
 });
 

@@ -8,21 +8,46 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  Platform,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import api from '../services/api';
 import { ENDPOINTS } from '../constants/config';
 
 const CreateTripScreen = ({ navigation }) => {
   const [name, setName] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [showStartPicker, setShowStartPicker] = useState(false);
+  const [showEndPicker, setShowEndPicker] = useState(false);
   const [baseCurrency, setBaseCurrency] = useState('PHP');
   const [totalBudget, setTotalBudget] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const formatDate = (date) => {
+    return date.toISOString().split('T')[0];
+  };
+
+  const handleStartDateChange = (event, selectedDate) => {
+    setShowStartPicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      setStartDate(selectedDate);
+      if (selectedDate > endDate) {
+        setEndDate(selectedDate);
+      }
+    }
+  };
+
+  const handleEndDateChange = (event, selectedDate) => {
+    setShowEndPicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      setEndDate(selectedDate);
+    }
+  };
+
   const handleCreateTrip = async () => {
-    if (!name || !startDate || !endDate) {
-      Alert.alert('Error', 'Please fill in required fields');
+    if (!name) {
+      Alert.alert('Error', 'Please enter trip name');
       return;
     }
 
@@ -31,8 +56,8 @@ const CreateTripScreen = ({ navigation }) => {
       const response = await api.post(ENDPOINTS.TRIPS, {
         trip: {
           name,
-          start_date: startDate,
-          end_date: endDate,
+          start_date: formatDate(startDate),
+          end_date: formatDate(endDate),
           base_currency: baseCurrency,
           active_currency: baseCurrency,
           total_budget: totalBudget || 0,
@@ -66,21 +91,38 @@ const CreateTripScreen = ({ navigation }) => {
         onChangeText={setName}
       />
 
-      <Text style={styles.label}>Start Date * (YYYY-MM-DD)</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="2024-12-29"
-        value={startDate}
-        onChangeText={setStartDate}
-      />
+      <Text style={styles.label}>Start Date *</Text>
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowStartPicker(true)}
+      >
+        <Text style={styles.dateText}>{formatDate(startDate)}</Text>
+      </TouchableOpacity>
+      {showStartPicker && (
+        <DateTimePicker
+          value={startDate}
+          mode="date"
+          display="default"
+          onChange={handleStartDateChange}
+        />
+      )}
 
-      <Text style={styles.label}>End Date * (YYYY-MM-DD)</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="2025-01-05"
-        value={endDate}
-        onChangeText={setEndDate}
-      />
+      <Text style={styles.label}>End Date *</Text>
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowEndPicker(true)}
+      >
+        <Text style={styles.dateText}>{formatDate(endDate)}</Text>
+      </TouchableOpacity>
+      {showEndPicker && (
+        <DateTimePicker
+          value={endDate}
+          mode="date"
+          display="default"
+          onChange={handleEndDateChange}
+          minimumDate={startDate}
+        />
+      )}
 
       <Text style={styles.label}>Currency</Text>
       <TextInput
@@ -134,6 +176,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     fontSize: 16,
+  },
+  dateButton: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    backgroundColor: '#f9f9f9',
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#333',
   },
   button: {
     height: 50,
