@@ -38,7 +38,10 @@ const ExpenseListScreen = ({ route, navigation }) => {
   };
 
   const renderExpense = ({ item }) => (
-    <View style={styles.expenseCard}>
+    <TouchableOpacity 
+      style={styles.expenseCard}
+      onPress={() => navigation.navigate('ExpenseDetail', { tripId, expense: item })}
+    >
       <View style={styles.expenseHeader}>
         <View style={styles.categoryContainer}>
           <Text style={styles.categoryIcon}>{getCategoryIcon(item.category)}</Text>
@@ -53,7 +56,7 @@ const ExpenseListScreen = ({ route, navigation }) => {
         Paid by {item.paid_by_user?.name || 'Unknown'}
       </Text>
       <Text style={styles.date}>{formatDate(item.expense_date)}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   const onRefresh = async () => {

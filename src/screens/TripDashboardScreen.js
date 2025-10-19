@@ -8,15 +8,20 @@ import {
   ScrollView,
 } from 'react-native';
 import api from '../services/api';
+import { useFocusEffect } from '@react-navigation/native';
 
 const TripDashboardScreen = ({ route, navigation }) => {
   const { tripId } = route.params;
   const [trip, setTrip] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [balance, setBalance] = useState(null);
 
-  useEffect(() => {
-    fetchTrip();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTrip();
+      fetchSettlement();
+    }, [])
+  );
 
   const fetchTrip = async () => {
     try {
@@ -45,6 +50,27 @@ const TripDashboardScreen = ({ route, navigation }) => {
     );
   }
 
+  const fetchSettlement = async () => {
+    try {
+      const response = await api.get(`/trips/${tripId}/settlement`);
+      
+      // Calculate user's balance
+      let userBalance = 0;
+      response.data.settlements.forEach(settlement => {
+        if (settlement.to_user.id === response.data.current_user_id) {
+          userBalance += parseFloat(settlement.amount);
+        }
+        if (settlement.from_user.id === response.data.current_user_id) {
+          userBalance -= parseFloat(settlement.amount);
+        }
+      });
+      
+      setBalance({ amount: userBalance, currency: response.data.currency });
+    } catch (error) {
+      console.error('Error fetching settlement:', error);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -54,6 +80,17 @@ const TripDashboardScreen = ({ route, navigation }) => {
         </Text>
         <Text style={styles.currency}>{trip.active_currency}</Text>
       </View>
+
+      {balance && (
+        <View style={[styles.balanceCard, balance.amount >= 0 ? styles.balancePositive : styles.balanceNegative]}>
+          <Text style={styles.balanceLabel}>
+            {balance.amount >= 0 ? "You're owed" : "You owe"}
+          </Text>
+          <Text style={styles.balanceAmount}>
+            {balance.currency} {Math.abs(balance.amount).toFixed(2)}
+          </Text>
+        </View>
+      )}
 
       <View style={styles.infoCard}>
         <Text style={styles.infoTitle}>Invite Code</Text>
@@ -176,6 +213,28 @@ const styles = StyleSheet.create({
   menuArrow: {
     fontSize: 24,
     color: '#ccc',
+  },
+  balanceCard: {
+    margin: 15,
+    padding: 20,
+    borderRadius: 12,
+    alignItems: 'center',
+  },
+  balancePositive: {
+    backgroundColor: '#d4edda',
+  },
+  balanceNegative: {
+    backgroundColor: '#f8d7da',
+  },
+  balanceLabel: {
+    fontSize: 14,
+    color: '#333',
+    marginBottom: 4,
+  },
+  balanceAmount: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#333',
   },
 });
 

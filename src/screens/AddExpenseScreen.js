@@ -18,7 +18,14 @@ const AddExpenseScreen = ({ route, navigation }) => {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [splitType, setSplitType] = useState('equal');
+  const [expenseDate, setExpenseDate] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    // Set today's date as default
+    const today = new Date().toISOString().split('T')[0];
+    setExpenseDate(today);
+  }, []);
 
   const categories = ['taxi', 'food', 'hotel', 'activities', 'shopping', 'other'];
 
@@ -37,6 +44,7 @@ const AddExpenseScreen = ({ route, navigation }) => {
           category,
           description,
           split_type: splitType,
+          expense_date: expenseDate,
         },
       });
 
@@ -102,6 +110,14 @@ const AddExpenseScreen = ({ route, navigation }) => {
         value={description}
         onChangeText={setDescription}
         multiline
+      />
+
+      <Text style={styles.label}>Date</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="YYYY-MM-DD"
+        value={expenseDate}
+        onChangeText={setExpenseDate}
       />
 
       <Text style={styles.label}>Split Type</Text>

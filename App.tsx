@@ -14,6 +14,7 @@ import ItineraryListScreen from './src/screens/ItineraryListScreen';
 import AddItineraryScreen from './src/screens/AddItineraryScreen';
 import DocumentListScreen from './src/screens/DocumentListScreen';
 import AddDocumentScreen from './src/screens/AddDocumentScreen';
+import ExpenseDetailScreen from './src/screens/ExpenseDetailScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -106,6 +107,11 @@ function App() {
           options={{ 
             headerShown: false,
           }}
+        />
+        <Stack.Screen 
+          name="ExpenseDetail" 
+          component={ExpenseDetailScreen}
+          options={{ title: 'Expense Details' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
