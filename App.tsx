@@ -102,13 +102,6 @@ function App() {
           options={{ title: 'Add Document' }}
         />
         <Stack.Screen 
-          name="Home" 
-          component={HomeScreen}
-          options={{ 
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen 
           name="ExpenseDetail" 
           component={ExpenseDetailScreen}
           options={{ title: 'Expense Details' }}
