@@ -69,8 +69,8 @@ const SignupScreen = ({ navigation }) => {
         onChangeText={setPassword}
         secureTextEntry
         autoCapitalize="none"
-        autoComplete="off"
-        textContentType="none"
+        autoComplete="password-new"
+        textContentType="oneTimeCode"
       />
 
       <TextInput
@@ -80,8 +80,8 @@ const SignupScreen = ({ navigation }) => {
         onChangeText={setPasswordConfirmation}
         secureTextEntry
         autoCapitalize="none"
-        autoComplete="off"
-        textContentType="none"
+        autoComplete="password-new"
+        textContentType="oneTimeCode"
       />
 
       <TouchableOpacity
