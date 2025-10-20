@@ -114,6 +114,9 @@ const HomeScreen = ({ navigation }) => {
       >
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>TripKit v1.0.0</Text>
+      </View>
     </View>
   );
 };
@@ -257,6 +260,14 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
     fontWeight: '500',
+  },
+  footer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#999',
   },
 });
 
