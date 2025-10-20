@@ -4,9 +4,10 @@
 
 [![React Native](https://img.shields.io/badge/React%20Native-0.82-blue.svg)](https://reactnative.dev/)
 [![iOS](https://img.shields.io/badge/iOS-13+-black.svg)](https://www.apple.com/ios/)
-[![Android](https://img.shields.io/badge/Android-6.0+-green.svg)](https://www.android.com/)
 
-🚧 **Status:** In Development
+🎉 **Status:** Ready for Beta Testing (v1.0)
+
+**Platform:** iOS only (Android support planned for v2.0)
 
 ---
 
@@ -21,21 +22,23 @@ TripKit mobile app is the frontend for the TripKit travel companion platform. It
 - 📎 **Document Storage** - Keep travel docs accessible
 - 🌍 **Multi-Currency** - Switch currencies on the go
 - 👥 **Real-time Collaboration** - Everyone stays in sync
+- 💸 **Smart Settlement** - See who owes whom instantly
 
 ---
 
 ## Screenshots
 
-*Coming soon - Screenshots will be added as features are developed*
+*Coming soon - Screenshots will be added after beta testing*
 
 ---
 
 ## Tech Stack
 
 - React Native 0.82
-- React Navigation (for routing)
+- React Navigation (native stack)
 - Axios (API calls)
-- AsyncStorage (local data)
+- AsyncStorage (token storage)
+- DateTimePicker (native date selection)
 - JWT Authentication
 
 ---
@@ -54,10 +57,10 @@ This app connects to the TripKit Rails API backend.
 
 - Node.js 20+
 - npm or yarn
-- Xcode 16+ (for iOS)
-- Android Studio (for Android)
-- CocoaPods (for iOS dependencies)
+- Xcode 16+ (required for iOS)
+- CocoaPods (required for iOS)
 - Watchman
+- macOS (required for iOS development)
 
 ---
 
@@ -77,72 +80,75 @@ pod install
 cd ..
 ```
 
-### 3. Configure API endpoint
-
-Create a `.env` file in the root directory:
-
-```
-API_URL=http://localhost:3000/api/v1
-```
-
-### 4. Start Metro bundler
+### 3. Start Metro bundler
 
 ```bash
 npm start
 ```
 
-### 5. Run on iOS
+### 4. Run on iOS
 
 In a new terminal:
 ```bash
 npm run ios
 ```
 
-### 6. Run on Android
-
-```bash
-npm run android
-```
-
 ---
 
-## Project Structure
+## Features
 
-```
-TripKitApp/
-├── src/
-│   ├── screens/         # Screen components
-│   ├── components/      # Reusable components
-│   ├── navigation/      # Navigation configuration
-│   ├── services/        # API services
-│   ├── utils/           # Helper functions
-│   └── constants/       # Constants and config
-├── ios/                 # iOS native code
-├── android/             # Android native code
-└── App.tsx              # Root component
-```
+### ✅ Completed (v1.0)
 
----
+**Authentication:**
+- Email/password signup and login
+- JWT token management
+- Secure password fields
+- Auto logout
 
-## Development Status
+**Trip Management:**
+- Create trips with native date pickers
+- Join trips with invite codes
+- View all your trips
+- Trip dashboard with balance display
+- Member count display
+- Auto-refresh on navigation
 
-**Completed:**
-- ✅ Project setup
-- ✅ iOS simulator running
+**Expense Tracking:**
+- Quick expense entry with categories
+- Category icons (🚕 🍽️ 🏨 🎫 🛒)
+- Total spent display
+- Edit/delete expenses
+- Equal or custom split
+- Auto date picker
+- Formatted dates
+- Pull-to-refresh
 
-**In Progress:**
-- 🔄 Authentication screens
-- 📋 Navigation setup
-- 📋 API integration
+**Settlement:**
+- Who owes whom calculations
+- Balance shown on dashboard
+- Celebration when all settled
+- Per-currency settlements
 
-**Planned:**
-- 📋 Trip management
-- 📋 Expense tracking UI
-- 📋 Itinerary screens
-- 📋 Document management
-- 📋 Settlement views
+**Itinerary:**
+- Add activities with native date/time pickers
+- Daily schedule view
+- Location and notes
+- Category-based organization
+- Pull-to-refresh
 
-**Target completion:** December 2025
+**Documents:**
+- Document metadata tracking
+- Document type categories
+- Shared access
+- Pull-to-refresh
+
+**Polish:**
+- Native iOS date pickers
+- Logout functionality
+- Empty states with icons
+- Loading indicators
+- App version footer
+- Pull-to-refresh on all lists
 
 ---
 
@@ -160,4 +166,42 @@ Then run the mobile app and it will connect to `http://localhost:3000`
 
 ---
 
+## Known Limitations (v1.0)
+
+- iOS only (no Android support yet)
+- File upload for documents (metadata only for now)
+- Mark individual expense splits as paid
+- Profile/settings screen
+- Push notifications
+- Offline mode
+
+These features are planned for v2.0.
+
+---
+
+## Development Roadmap
+
+**v1.0** ✅ (Current - October 2024)
+- All core features complete
+- iOS support
+- Ready for beta testing
+
+**v1.1** (December 2024)
+- Real-world testing feedback
+- Bug fixes from December trip
+- Performance improvements
+
+**v2.0** (Q1 2025)
+- Android support
+- Actual file uploads
+- Push notifications
+- Offline support
+- Enhanced UI/UX
+- Profile/settings
+
+---
+
 **Backend API:** [github.com/lmagsino/tripkit-api](https://github.com/lmagsino/tripkit-api)
+
+**Version:** 1.0.0  
+**Last Updated:** October 2024
