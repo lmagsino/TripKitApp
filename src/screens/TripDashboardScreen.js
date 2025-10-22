@@ -6,6 +6,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  Alert,
+  Clipboard,
 } from 'react-native';
 import api from '../services/api';
 import { useFocusEffect } from '@react-navigation/native';
@@ -95,6 +97,15 @@ const TripDashboardScreen = ({ route, navigation }) => {
       <View style={styles.infoCard}>
         <Text style={styles.infoTitle}>Invite Code</Text>
         <Text style={styles.inviteCode}>{trip.invite_code}</Text>
+        <TouchableOpacity 
+          style={styles.copyButton}
+          onPress={() => {
+            Clipboard.setString(trip.invite_code);
+            Alert.alert('Copied!', 'Invite code copied to clipboard');
+          }}
+        >
+          <Text style={styles.copyButtonText}>📋 Copy Code</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
@@ -235,6 +246,19 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
+  },
+  copyButton: {
+    marginTop: 15,
+    backgroundColor: '#007AFF',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  copyButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
   },
 });
 
