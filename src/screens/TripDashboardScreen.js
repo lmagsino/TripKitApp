@@ -17,11 +17,13 @@ const TripDashboardScreen = ({ route, navigation }) => {
   const [trip, setTrip] = useState(null);
   const [loading, setLoading] = useState(true);
   const [balance, setBalance] = useState(null);
+  const [expenseCount, setExpenseCount] = useState(0);
 
   useFocusEffect(
     React.useCallback(() => {
       fetchTrip();
       fetchSettlement();
+      fetchExpenseCount();
     }, [])
   );
 
@@ -73,6 +75,15 @@ const TripDashboardScreen = ({ route, navigation }) => {
     }
   };
 
+  const fetchExpenseCount = async () => {
+    try {
+      const response = await api.get(`/trips/${tripId}/expenses`);
+      setExpenseCount(response.data.length);
+    } catch (error) {
+      console.error('Error fetching expense count:', error);
+    }
+  };
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -114,7 +125,14 @@ const TripDashboardScreen = ({ route, navigation }) => {
           onPress={() => navigation.navigate('ExpenseList', { tripId: trip.id })}
         >
           <Text style={styles.menuIcon}>💰</Text>
-          <Text style={styles.menuText}>Expenses</Text>
+          <View style={styles.menuTextContainer}>
+            <Text style={styles.menuText}>Expenses</Text>
+            {expenseCount > 0 && (
+              <View style={styles.badge}>
+                <Text style={styles.badgeText}>{expenseCount}</Text>
+              </View>
+            )}
+          </View>
           <Text style={styles.menuArrow}>›</Text>
         </TouchableOpacity>
 
@@ -259,6 +277,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600',
     textAlign: 'center',
+  },
+  menuTextContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  badge: {
+    backgroundColor: '#007AFF',
+    borderRadius: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    marginLeft: 10,
+  },
+  badgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
   },
 });
 
