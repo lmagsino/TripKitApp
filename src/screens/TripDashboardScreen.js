@@ -19,14 +19,6 @@ const TripDashboardScreen = ({ route, navigation }) => {
   const [balance, setBalance] = useState(null);
   const [expenseCount, setExpenseCount] = useState(0);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      fetchTrip();
-      fetchSettlement();
-      fetchExpenseCount();
-    }, [])
-  );
-
   const fetchTrip = async () => {
     try {
       const response = await api.get(`/trips/${tripId}`);
@@ -37,22 +29,6 @@ const TripDashboardScreen = ({ route, navigation }) => {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#007AFF" />
-      </View>
-    );
-  }
-
-  if (!trip) {
-    return (
-      <View style={styles.centered}>
-        <Text>Trip not found</Text>
-      </View>
-    );
-  }
 
   const fetchSettlement = async () => {
     try {
@@ -83,6 +59,30 @@ const TripDashboardScreen = ({ route, navigation }) => {
       console.error('Error fetching expense count:', error);
     }
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchTrip();
+      fetchSettlement();
+      fetchExpenseCount();
+    }, [])
+  );
+
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color="#007AFF" />
+      </View>
+    );
+  }
+
+  if (!trip) {
+    return (
+      <View style={styles.centered}>
+        <Text>Trip not found</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView style={styles.container}>
