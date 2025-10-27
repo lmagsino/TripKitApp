@@ -22,10 +22,14 @@ const AddExpenseScreen = ({ route, navigation }) => {
   const [expenseDate, setExpenseDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [members, setMembers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
   
   useEffect(() => {
-    // Initialize with today's date as Date object
+    // Initialize with today's date
     setExpenseDate(new Date());
+    // Fetch trip members
+    fetchMembers();
   }, []);
 
   const categories = ['taxi', 'food', 'hotel', 'activities', 'shopping', 'other'];
@@ -35,6 +39,18 @@ const AddExpenseScreen = ({ route, navigation }) => {
       return date;
     }
     return date.toISOString().split('T')[0];
+  };
+
+  const fetchMembers = async () => {
+    try {
+      const response = await api.get(`/trips/${tripId}`);
+      const tripMembers = response.data.users || [];
+      setMembers(tripMembers);
+      // Select all by default
+      setSelectedUsers(tripMembers.map(u => u.id));
+    } catch (error) {
+      console.error('Error fetching members:', error);
+    }
   };
 
   const handleDateChange = (event, selectedDate) => {
@@ -50,6 +66,11 @@ const AddExpenseScreen = ({ route, navigation }) => {
       return;
     }
 
+    if (selectedUsers.length === 0) {
+      Alert.alert('Error', 'Please select at least one person to split with');
+      return;
+    }
+
     setLoading(true);
     try {
       await api.post(`/trips/${tripId}/expenses`, {
@@ -61,6 +82,7 @@ const AddExpenseScreen = ({ route, navigation }) => {
           split_type: splitType,
           expense_date: formatDate(expenseDate),
         },
+        split_user_ids: selectedUsers,
       });
 
       Alert.alert('Success', 'Expense added!', [
@@ -73,6 +95,14 @@ const AddExpenseScreen = ({ route, navigation }) => {
       Alert.alert('Error', 'Failed to add expense');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const toggleUser = (userId) => {
+    if (selectedUsers.includes(userId)) {
+      setSelectedUsers(selectedUsers.filter(id => id !== userId));
+    } else {
+      setSelectedUsers([...selectedUsers, userId]);
     }
   };
 
@@ -177,6 +207,29 @@ const AddExpenseScreen = ({ route, navigation }) => {
             Custom
           </Text>
         </TouchableOpacity>
+      </View>
+
+      <Text style={styles.label}>Split Among</Text>
+      <View style={styles.memberContainer}>
+        {members.map((member) => (
+          <TouchableOpacity
+            key={member.id}
+            style={[
+              styles.memberButton,
+              selectedUsers.includes(member.id) && styles.memberButtonActive
+            ]}
+            onPress={() => toggleUser(member.id)}
+          >
+            <Text
+              style={[
+                styles.memberText,
+                selectedUsers.includes(member.id) && styles.memberTextActive
+              ]}
+            >
+              {selectedUsers.includes(member.id) ? '☑️' : '☐'} {member.name}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       <TouchableOpacity
@@ -317,6 +370,29 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 16,
     color: '#333',
+  },
+  memberContainer: {
+    gap: 10,
+  },
+  memberButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: '#ddd',
+    backgroundColor: '#fff',
+  },
+  memberButtonActive: {
+    borderColor: '#007AFF',
+    backgroundColor: '#e3f2fd',
+  },
+  memberText: {
+    fontSize: 16,
+    color: '#666',
+  },
+  memberTextActive: {
+    color: '#007AFF',
+    fontWeight: '600',
   },
 });
 
