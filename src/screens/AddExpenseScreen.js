@@ -10,6 +10,7 @@ import {
   ScrollView,
 } from 'react-native';
 import api from '../services/api';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const AddExpenseScreen = ({ route, navigation }) => {
   const { tripId } = route.params;
@@ -18,16 +19,30 @@ const AddExpenseScreen = ({ route, navigation }) => {
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
   const [splitType, setSplitType] = useState('equal');
-  const [expenseDate, setExpenseDate] = useState('');
+  const [expenseDate, setExpenseDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [loading, setLoading] = useState(false);
   
   useEffect(() => {
-    // Set today's date as default
-    const today = new Date().toISOString().split('T')[0];
-    setExpenseDate(today);
+    // Initialize with today's date as Date object
+    setExpenseDate(new Date());
   }, []);
 
   const categories = ['taxi', 'food', 'hotel', 'activities', 'shopping', 'other'];
+
+  const formatDate = (date) => {
+    if (typeof date === 'string') {
+      return date;
+    }
+    return date.toISOString().split('T')[0];
+  };
+
+  const handleDateChange = (event, selectedDate) => {
+    setShowDatePicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      setExpenseDate(selectedDate);
+    }
+  };
 
   const handleAddExpense = async () => {
     if (!amount || !category) {
@@ -44,7 +59,7 @@ const AddExpenseScreen = ({ route, navigation }) => {
           category,
           description,
           split_type: splitType,
-          expense_date: expenseDate,
+          expense_date: formatDate(expenseDate),
         },
       });
 
@@ -113,12 +128,20 @@ const AddExpenseScreen = ({ route, navigation }) => {
       />
 
       <Text style={styles.label}>Date</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="YYYY-MM-DD"
-        value={expenseDate}
-        onChangeText={setExpenseDate}
-      />
+      <TouchableOpacity
+        style={styles.dateButton}
+        onPress={() => setShowDatePicker(true)}
+      >
+        <Text style={styles.dateText}>{formatDate(expenseDate)}</Text>
+      </TouchableOpacity>
+      {showDatePicker && (
+        <DateTimePicker
+          value={expenseDate}
+          mode="date"
+          display="default"
+          onChange={handleDateChange}
+        />
+      )}
 
       <Text style={styles.label}>Split Type</Text>
       <View style={styles.splitTypeContainer}>
@@ -281,6 +304,19 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  dateButton: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    justifyContent: 'center',
+    backgroundColor: '#f9f9f9',
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#333',
   },
 });
 
