@@ -231,6 +231,13 @@ const AddExpenseScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         ))}
       </View>
+      {amount && selectedUsers.length > 0 && splitType === 'equal' && (
+        <View style={styles.splitInfo}>
+          <Text style={styles.splitInfoText}>
+            {currency} {(parseFloat(amount) / selectedUsers.length).toFixed(2)} each ({selectedUsers.length} {selectedUsers.length === 1 ? 'person' : 'people'})
+          </Text>
+        </View>
+      )}
 
       <TouchableOpacity
         style={styles.button}
@@ -393,6 +400,18 @@ const styles = StyleSheet.create({
   memberTextActive: {
     color: '#007AFF',
     fontWeight: '600',
+  },
+  splitInfo: {
+    marginTop: 15,
+    padding: 12,
+    backgroundColor: '#e3f2fd',
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  splitInfoText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#007AFF',
   },
 });
 
