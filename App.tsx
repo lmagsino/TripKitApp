@@ -43,12 +43,11 @@ function App() {
           component={SignupScreen}
           options={{ title: 'Create Account', headerShown: false }}
         />
-        <Stack.Screen 
-          name="Home" 
+        <Stack.Screen
+          name="Home"
           component={HomeScreen}
-          options={{ 
-            title: 'My Trips',
-            headerLeft: () => null,
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen 

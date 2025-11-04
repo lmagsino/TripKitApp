@@ -8,6 +8,7 @@ import {
   StyleSheet,
   ActivityIndicator,
   RefreshControl,
+  SafeAreaView,
 } from 'react-native';
 import api from '../services/api';
 import { ENDPOINTS } from '../constants/config';
@@ -68,20 +69,23 @@ const HomeScreen = ({ navigation }) => {
 
   if (loading) {
     return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color="#007AFF" />
-      </View>
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.centered}>
+          <ActivityIndicator size="large" color="#007AFF" />
+        </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Trips</Text>
-        <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={styles.safeArea}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>My Trips</Text>
+          <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+            <Text style={styles.logoutText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
 
       {trips.length === 0 ? (
         <View style={styles.emptyState}>
@@ -108,20 +112,26 @@ const HomeScreen = ({ navigation }) => {
         <Text style={styles.joinButtonText}>Join Trip with Code</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.fab}
         onPress={() => navigation.navigate('CreateTrip')}
       >
         <Text style={styles.fabText}>+</Text>
       </TouchableOpacity>
+
       <View style={styles.footer}>
         <Text style={styles.footerText}>TripKit v1.0.0</Text>
       </View>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5',

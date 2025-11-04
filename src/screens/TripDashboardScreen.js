@@ -7,8 +7,8 @@ import {
   ActivityIndicator,
   ScrollView,
   Alert,
-  Clipboard,
 } from 'react-native';
+import Clipboard from '@react-native-clipboard/clipboard';
 import api from '../services/api';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -65,7 +65,7 @@ const TripDashboardScreen = ({ route, navigation }) => {
       fetchTrip();
       fetchSettlement();
       fetchExpenseCount();
-    }, [])
+    }, [tripId])
   );
 
   if (loading) {

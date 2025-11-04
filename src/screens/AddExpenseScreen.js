@@ -24,6 +24,8 @@ const AddExpenseScreen = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
+  const [guestNames, setGuestNames] = useState([]);
+  const [newGuestName, setNewGuestName] = useState('');
   
   useEffect(() => {
     // Initialize with today's date
@@ -66,8 +68,8 @@ const AddExpenseScreen = ({ route, navigation }) => {
       return;
     }
 
-    if (selectedUsers.length === 0) {
-      Alert.alert('Error', 'Please select at least one person to split with');
+    if (selectedUsers.length === 0 && guestNames.length === 0) {
+      Alert.alert('Error', 'Please select at least one person or add a guest to split with');
       return;
     }
 
@@ -83,6 +85,7 @@ const AddExpenseScreen = ({ route, navigation }) => {
           expense_date: formatDate(expenseDate),
         },
         split_user_ids: selectedUsers,
+        guest_names: guestNames,
       });
 
       Alert.alert('Success', 'Expense added!', [
@@ -104,6 +107,17 @@ const AddExpenseScreen = ({ route, navigation }) => {
     } else {
       setSelectedUsers([...selectedUsers, userId]);
     }
+  };
+
+  const addGuestName = () => {
+    if (newGuestName.trim()) {
+      setGuestNames([...guestNames, newGuestName.trim()]);
+      setNewGuestName('');
+    }
+  };
+
+  const removeGuestName = (index) => {
+    setGuestNames(guestNames.filter((_, i) => i !== index));
   };
 
   return (
@@ -231,10 +245,38 @@ const AddExpenseScreen = ({ route, navigation }) => {
           </TouchableOpacity>
         ))}
       </View>
-      {amount && selectedUsers.length > 0 && splitType === 'equal' && (
+
+      <Text style={styles.label}>Add Guests (Non-members)</Text>
+      <View style={styles.guestInputContainer}>
+        <TextInput
+          style={styles.guestInput}
+          placeholder="Guest name (e.g., John)"
+          value={newGuestName}
+          onChangeText={setNewGuestName}
+          onSubmitEditing={addGuestName}
+        />
+        <TouchableOpacity style={styles.addGuestButton} onPress={addGuestName}>
+          <Text style={styles.addGuestButtonText}>+ Add</Text>
+        </TouchableOpacity>
+      </View>
+
+      {guestNames.length > 0 && (
+        <View style={styles.guestList}>
+          {guestNames.map((name, index) => (
+            <View key={index} style={styles.guestItem}>
+              <Text style={styles.guestName}>👤 {name}</Text>
+              <TouchableOpacity onPress={() => removeGuestName(index)}>
+                <Text style={styles.removeGuestButton}>✕</Text>
+              </TouchableOpacity>
+            </View>
+          ))}
+        </View>
+      )}
+
+      {amount && (selectedUsers.length > 0 || guestNames.length > 0) && splitType === 'equal' && (
         <View style={styles.splitInfo}>
           <Text style={styles.splitInfoText}>
-            {currency} {(parseFloat(amount) / selectedUsers.length).toFixed(2)} each ({selectedUsers.length} {selectedUsers.length === 1 ? 'person' : 'people'})
+            {currency} {(parseFloat(amount) / (selectedUsers.length + guestNames.length)).toFixed(2)} each ({selectedUsers.length + guestNames.length} {(selectedUsers.length + guestNames.length) === 1 ? 'person' : 'people'})
           </Text>
         </View>
       )}
@@ -412,6 +454,59 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#007AFF',
+  },
+  guestInputContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+  },
+  guestInput: {
+    flex: 1,
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    backgroundColor: '#f9f9f9',
+  },
+  addGuestButton: {
+    height: 50,
+    paddingHorizontal: 20,
+    backgroundColor: '#28a745',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  addGuestButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  guestList: {
+    marginTop: 10,
+    gap: 8,
+  },
+  guestItem: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#e8f5e9',
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#4caf50',
+  },
+  guestName: {
+    fontSize: 16,
+    color: '#2e7d32',
+    fontWeight: '500',
+  },
+  removeGuestButton: {
+    fontSize: 20,
+    color: '#d32f2f',
+    fontWeight: 'bold',
+    paddingHorizontal: 8,
   },
 });
 
